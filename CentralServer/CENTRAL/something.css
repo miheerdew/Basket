@@ -1,0 +1,29 @@
+#user_div {
+    height: 100%;
+    min-height: 100%;
+    max-width: 30%;
+    float: left;
+}
+#search_div {
+    float: right;
+    padding-left: 10px;
+    width: 65%;
+}
+#status {
+    background-color: lightGray;
+    margin-top: 5px;
+}
+th {
+    background-color: Yellow;
+}
+#user_table {
+    border-style: dashed;
+}
+table {
+    width: 100%;
+    border-spacing: 1em;
+}
+
+body{
+	background-color:DarkKhaki;
+}

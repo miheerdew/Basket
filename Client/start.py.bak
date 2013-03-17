@@ -1,0 +1,48 @@
+#!/usr/bin/env python
+import os
+import sys
+import os.path as op
+import logging
+
+base_dir = op.dirname(op.abspath(__file__))
+sys.path.insert(0,(base_dir))
+
+from daemon import daemon
+import local_server
+import easygui as eg
+import tools
+
+class Server(daemon):
+    
+    def __init__(self,logger,pidfile):
+        self.logger = logger
+        daemon.__init__(self,pidfile)
+    
+    def run(self):
+      try:
+        local_server.main(self.logger)
+      except:
+        eg.exceptionbox()
+
+if __name__ == '__main__':
+    PIDFILE = op.join(base_dir,'PID')
+    logging.basicConfig(filename=op.join(base_dir,'LOGFILE.txt'),level=logging.DEBUG)
+    s = Server(logging.root,PIDFILE)
+    try:
+        pid = int(open(PIDFILE).read())
+    except:
+        pid = None
+     
+    if pid and tools.is_pid_running(pid):
+        res=eg.buttonbox("Server is already running and its pid is %s.\n\
+        What do you want to do ?"%pid,choices=("Stop","Restart","Nothing"))
+        
+        if res != "Nothing": 
+            s.stop()
+        if res != "Restart":
+            sys.exit()
+    s.start()               
+        
+        
+
+          
